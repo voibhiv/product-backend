@@ -1,4 +1,4 @@
-export class SaveMovieCommand {
+export class SaveProductCommand {
   constructor(
     readonly description: string,
     readonly cost: number,

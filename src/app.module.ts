@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
 import { ConfigModule } from '@nestjs/config';
-
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -13,8 +11,9 @@ import { ConfigModule } from '@nestjs/config';
       useClass: PostgresConfigService,
       inject: [PostgresConfigService],
     }),
+    ProductModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
