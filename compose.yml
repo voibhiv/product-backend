@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    container_name: product-backend-container
+    command: npx nest start
+    ports:
+      - '3000:3000'
+    depends_on:
+      - 'db'
+  db:
+    image: postgres
+    container_name: product-backend-db
+    restart: always
+    tty: true
+    environment:
+      POSTGRES_DB: product-db
+      POSTGRES_USER: user_dev
+      POSTGRES_PASSWORD: pass_dev
+      PGDATA: /var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    volumes:
+      - product-backend-volume:/var/lib/postgresql/data/:rw
+
+volumes:
+  product-backend-volume:
