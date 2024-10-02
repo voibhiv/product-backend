@@ -19,7 +19,10 @@ export class ProductEntity {
   @Column({ type: 'bytea', nullable: true })
   image?: Buffer;
 
-  @OneToMany(() => ProductShopEntity, (productShop) => productShop.product)
+  @OneToMany(() => ProductShopEntity, (productShop) => productShop.product, {
+    cascade: ['insert', 'update'],
+    eager: true,
+  })
   product_shop: ProductShopEntity[];
 
   constructor(description: string, cost?: number, image?: Buffer) {

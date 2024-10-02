@@ -11,6 +11,7 @@ export class SaveProductService implements SaveProductUseCase {
   async saveProduct(command: SaveProductCommand): Promise<void> {
     const product: Product = {
       image: command.image,
+      shops: command.shops,
       cost: command.cost,
       description: command.description,
     };
