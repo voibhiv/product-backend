@@ -1,5 +1,5 @@
 import { SaveProductCommand } from './save-product.command';
 
-export abstract class SaveProductUseCase {
+export abstract class ProductUseCase {
   abstract saveProduct(command: SaveProductCommand): Promise<void>;
 }

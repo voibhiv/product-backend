@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { ApplicationModule } from '../application/application.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from './out/product.entity';
-import { SaveProductController } from './in/save-product.controller';
+import { ProductController } from './in/product.controller';
 import { ServicesOut } from './out';
 
 @Module({
@@ -12,6 +12,6 @@ import { ServicesOut } from './out';
   ],
   providers: [...ServicesOut],
   exports: [...ServicesOut],
-  controllers: [SaveProductController],
+  controllers: [ProductController],
 })
 export class AdapterModule {}

@@ -1,9 +1,9 @@
-import { SaveProductShop } from 'src/product-shop/application/ports/in/save-product-shop.command';
+import { SaveProductShopCommand } from 'src/product-shop/application/ports/in/product-shop.command';
 
 export class SaveProductCommand {
   constructor(
     readonly description: string,
-    readonly shops: SaveProductShop[],
+    readonly shops: SaveProductShopCommand[],
     readonly cost?: number,
     readonly image?: string,
   ) {}

@@ -1,10 +1,10 @@
 import { Provider } from '@nestjs/common';
-import { SaveProductUseCase } from '../ports/in/save-product.use-case';
-import { SaveProductService } from './save-product.service';
+import { ProductUseCase } from '../ports/in/save-product.use-case';
+import { ProductService } from './product.service';
 
 export const Services: Provider[] = [
   {
-    provide: SaveProductUseCase,
-    useClass: SaveProductService,
+    provide: ProductUseCase,
+    useClass: ProductService,
   },
 ];

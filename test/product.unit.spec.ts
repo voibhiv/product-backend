@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SaveProductService } from 'src/product/application/services/save-product.service';
+import { SaveProductService } from 'src/product/application/services/product.service';
 import { AdapterModule } from 'src/product/adapter/adapter.module';
 import { ApplicationModule } from 'src/product/application/application.module';
 import { SaveProductCommand } from 'src/product/application/ports/in/save-product.command';

@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -22,8 +23,16 @@ export class SaveProductRequest {
   @IsString()
   readonly image: string;
 
-  @IsArray()
-  @ValidateNested({ each: true })
+  @IsArray({ message: 'Um ou mais campos obrigatórios não foram preenchidos corretamente.' })
+  @ArrayNotEmpty({
+    message:
+      'Um ou mais campos obrigatórios não foram preenchidos corretamente.',
+  })
+  @ValidateNested({
+    each: true,
+    message:
+      'Existe uma inconsistência nos dados de entrada, por favor tente novamente!.',
+  })
   @Type(() => SaveProductShopRequest)
   readonly shops: SaveProductShopRequest[];
 
