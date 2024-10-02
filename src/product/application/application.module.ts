@@ -1,10 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { AdapterModule } from '../adapter/adapter.module';
-import { ServicesOut } from './services';
+import { Services } from './services';
 
 @Module({
   imports: [forwardRef(() => AdapterModule)],
-  providers: [...ServicesOut],
-  exports: [...ServicesOut],
+  providers: [...Services],
+  exports: [...Services],
 })
 export class ApplicationModule {}

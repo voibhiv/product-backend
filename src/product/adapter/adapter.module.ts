@@ -2,8 +2,8 @@ import { forwardRef, Module } from '@nestjs/common';
 import { ApplicationModule } from '../application/application.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from './out/product.entity';
-import { ServicesOut } from '../application/services';
 import { SaveProductController } from './in/save-product.controller';
+import { ServicesOut } from './out';
 
 @Module({
   imports: [

@@ -9,7 +9,6 @@ export class SaveProductService implements SaveProductUseCase {
   constructor(private productPersistencePort: ProductPersistencePort) {}
 
   async saveProduct(command: SaveProductCommand): Promise<void> {
-    console.log("to na camada de serviço");
     const product: Product = {
       image: command.image,
       cost: command.cost,
