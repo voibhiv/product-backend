@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
 import { ConfigModule } from '@nestjs/config';
 import { ProductModule } from './product/product.module';
+import { ShopModule } from './shop/shop.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ProductModule } from './product/product.module';
       inject: [PostgresConfigService],
     }),
     ProductModule,
+    ShopModule
   ],
   controllers: [],
   providers: [],

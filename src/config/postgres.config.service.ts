@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { ProductShopEntity } from 'src/product-shop/adapter/out/product-shop.entity';
 import { ProductEntity } from 'src/product/adapter/out/product.entity';
+import { ShopEntity } from 'src/shop/adapter/out/shop.entity';
 
 @Injectable()
 export class PostgresConfigService implements TypeOrmOptionsFactory {
@@ -12,7 +14,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [ProductEntity],
+      entities: [ProductEntity, ShopEntity, ProductShopEntity],
       migrations: [`${__dirname}/database/migrations/*{.ts,.js}`],
       synchronize: false,
     };

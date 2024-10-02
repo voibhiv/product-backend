@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductShopEntity } from 'src/product-shop/adapter/out/product-shop.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'product' })
 export class ProductEntity {
@@ -17,6 +18,9 @@ export class ProductEntity {
 
   @Column({ type: 'bytea', nullable: true })
   image?: Buffer;
+
+  @OneToMany(() => ProductShopEntity, (productShop) => productShop.product)
+  product_shop: ProductShopEntity[];
 
   constructor(description: string, cost?: number, image?: Buffer) {
     this.description = description;
