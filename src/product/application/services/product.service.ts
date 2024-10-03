@@ -16,6 +16,6 @@ export class ProductService implements ProductUseCase {
       description: command.description,
     };
 
-    await this.productPersistencePort.persistProduct(product);
+    await this.productPersistencePort.execute(product);
   }
 }

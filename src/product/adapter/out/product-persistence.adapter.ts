@@ -14,7 +14,7 @@ export class ProductPersistenceAdapter implements ProductPersistencePort {
     private readonly repository: Repository<ProductEntity>,
   ) {}
 
-  async persistProduct(product: Product): Promise<void> {
+  async execute(product: Product): Promise<void> {
     const productEntity: ProductEntity = this.productMapper.toEntity(product);
 
     await this.repository.save(productEntity);

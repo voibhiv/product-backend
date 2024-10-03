@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ProductUseCase } from 'src/product/application/ports/in/save-product.use-case';
 import { SaveProductRequest } from './requests/save-product.request';
 import { SaveProductCommand } from 'src/product/application/ports/in/save-product.command';
+import { GenericFilter } from 'src/core/generics/generic-filter';
 
 @Controller('product')
 export class ProductController {
@@ -15,7 +16,8 @@ export class ProductController {
   }
 
   @Get()
-  list() {
+  list(@Query() filter: GenericFilter) {
+    console.log(filter);
     return 'olaaa';
   }
 }
