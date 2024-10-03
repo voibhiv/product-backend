@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SaveProductCommand } from '../ports/in/save-product.command';
 import { Product } from 'src/product/domain/product';
 import { ProductPersistencePort } from '../ports/out/product-persistence.adapter';
-import { ProductUseCase } from '../ports/in/save-product.use-case';
+import { ProductUseCase } from '../ports/in/product.use-case';
 
 @Injectable()
 export class ProductService implements ProductUseCase {

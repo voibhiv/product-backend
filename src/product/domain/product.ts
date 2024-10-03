@@ -4,6 +4,6 @@ import { Shop } from 'src/shop/domain/shop';
 export class Product {
   description: string;
   cost?: number;
-  image?: string;
+  image?: Buffer;
   shops: SaveProductShopCommand[];
 }

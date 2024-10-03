@@ -5,6 +5,6 @@ export class SaveProductCommand {
     readonly description: string,
     readonly shops: SaveProductShopCommand[],
     readonly cost?: number,
-    readonly image?: string,
+    readonly image?: Buffer,
   ) {}
 }

@@ -20,8 +20,7 @@ export class SaveProductRequest {
   readonly cost: number;
 
   @IsOptional()
-  @IsString()
-  readonly image: string;
+  readonly image: Buffer;
 
   @IsArray({ message: 'Um ou mais campos obrigatórios não foram preenchidos corretamente.' })
   @ArrayNotEmpty({
