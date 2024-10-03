@@ -13,6 +13,7 @@ import { SaveProductCommand } from 'src/product/application/ports/in/save-produc
 import { GenericFilter } from 'src/core/generics/generic-filter';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFileFilter } from 'src/core/generics/image.validator';
+import { ListProductRequest } from './requests/list-product.request';
 
 @Controller('product')
 export class ProductController {
@@ -36,8 +37,7 @@ export class ProductController {
   }
 
   @Get()
-  list(@Query() filter: GenericFilter) {
-    console.log(filter);
-    return 'olaaa';
+  list(@Query() filter: GenericFilter & ListProductRequest) {
+    return this.productUseCase.list(filter);
   }
 }

@@ -1,17 +1,69 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './product.entity';
 import { ProductMapper } from './product.mapper';
-import { Repository } from 'typeorm';
+import { FindOptionsWhere, ILike, Repository } from 'typeorm';
+import { GenericFilter } from 'src/core/generics/generic-filter';
+import { PaginateService } from 'src/core/generics/paginate.service';
+import { Product } from 'src/product/domain/product';
+import { ListProductRequest } from '../in/requests/list-product.request';
+import { ProductListPort } from 'src/product/application/ports/out/product-list.adapter';
 
-export class ProductListAdapter implements ProductListAdapter {
+export class ProductListAdapter
+  extends PaginateService
+  implements ProductListPort
+{
   constructor(
     private productMapper: ProductMapper,
     @InjectRepository(ProductEntity)
     private readonly repository: Repository<ProductEntity>,
-  ) {}
-
-  async execute() {
-    
+  ) {
+    super();
   }
 
+  async execute(
+    filter: GenericFilter & ListProductRequest,
+  ): Promise<Product[]> {
+    const { ...params } = filter;
+    const relations = ['product_shop', 'product_shop.shop'];
+    const productList = await this.paginate(
+      this.repository,
+      filter,
+      this.createWhereQuery(params),
+      relations,
+    );
+
+    return productList.map((product) => {
+      return this.productMapper.toResponse(product);
+    });
+  }
+
+  private createWhereQuery(
+    params: ListProductRequest,
+  ): FindOptionsWhere<ProductEntity> {
+    const where: FindOptionsWhere<ProductEntity> = {};
+
+    // Check by code/id
+    if (params.id) {
+      where.id = params.id;
+    }
+
+    // Check description
+    if (params.description) {
+      where.description = ILike(`%${params.description}%`);
+    }
+
+    // Check by cost of product
+    if (params.cost) {
+      where.cost = params.cost;
+    }
+
+    // Check 'precoVenda'
+    if (params.salePrice) {
+      where.product_shop = {
+        sale_price: params.salePrice,
+      };
+    }
+
+    return where;
+  }
 }

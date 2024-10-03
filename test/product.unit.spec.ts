@@ -6,8 +6,9 @@ import { HttpStatus } from '@nestjs/common';
 import { SaveProductRequest } from 'src/product/adapter/in/requests/save-product.request';
 import { validate } from 'class-validator';
 import { ProductDescriptionException } from 'src/core/exceptions/product/product-description.exception';
+import { GenericFilter } from 'src/core/generics/generic-filter';
 
-describe('Product Tests', () => {
+describe('Product Service Tests', () => {
   let service: ProductService;
 
   beforeEach(async () => {
@@ -16,7 +17,8 @@ describe('Product Tests', () => {
         {
           provide: ProductService,
           useValue: {
-            saveProduct: jest.fn().mockResolvedValue(undefined),
+            saveProduct: jest.fn(),
+            list: jest.fn(),
           },
         },
       ],
@@ -149,6 +151,86 @@ describe('Product Tests', () => {
       request.description = 'Product Test';
       request.cost = 50.35;
       request.shops = [{ idShop: 1, shopPrice: 50.0 }];
+
+      const errors = await validate(request);
+      expect(errors.length).toBe(0);
+    });
+  });
+
+  describe('List Product Service', () => {
+    it('should be defined', () => {
+      expect(service).toBeDefined();
+    });
+
+    it('should return a list of products if sucess', async () => {
+      const request = new GenericFilter();
+      request.page = 1;
+      request.pageSize = 10;
+
+      const mockProductResponse = [
+        {
+          description: 'Testando módulo',
+          cost: 12345622012.123,
+          image: null,
+          shops: [
+            {
+              idShop: 3,
+              shopPrice: 200.31,
+              description: 'Mocked Desc',
+            },
+            {
+              idShop: 4,
+              shopPrice: 120.0,
+              description: 'Mocked Desc',
+            },
+          ],
+        },
+        {
+          description: 'Testando módulo 2',
+          cost: 12345622012.123,
+          image: null,
+          shops: [
+            {
+              idShop: 6,
+              shopPrice: 200.31,
+              description: 'Mocked Desc',
+            },
+            {
+              idShop: 7,
+              shopPrice: 120.0,
+              description: 'Mocked Desc',
+            },
+          ],
+        },
+      ];
+
+      const listProductSpy = jest
+        .spyOn(service, 'list')
+        .mockResolvedValue(mockProductResponse);
+
+      const result = await service.list(request);
+      const statusCode = HttpStatus.OK;
+
+      expect(result).toEqual(mockProductResponse);
+      expect(listProductSpy).toHaveBeenCalledWith(request);
+      expect(statusCode).toBe(HttpStatus.OK);
+    });
+  });
+
+  describe('Paginate Validator Exceptions', () => {
+    it('should return an error if page or limit was not defined', async () => {
+      const request = new GenericFilter();
+      request.page = undefined;
+      request.pageSize = undefined;
+
+      const errors = await validate(request);
+      expect(errors.length).toBeGreaterThan(0);
+    });
+
+    it('should accept request if validations request is valid', async () => {
+      const request = new GenericFilter();
+      request.page = 1;
+      request.pageSize = 10;
 
       const errors = await validate(request);
       expect(errors.length).toBe(0);

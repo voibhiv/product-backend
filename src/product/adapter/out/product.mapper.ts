@@ -15,7 +15,7 @@ export class ProductMapper {
       shops: product.product_shop.map((shops) => {
         return {
           idShop: shops.shop.id,
-          shopPrice: shops.sale_price,
+          shopPrice: Number(shops.sale_price),
           description: shops.shop.description,
         };
       }),
@@ -36,7 +36,7 @@ export class ProductMapper {
 
         shopEntity.id = shop.idShop;
 
-        productShopEntity.sale_price = shop.shopPrice;
+        productShopEntity.sale_price = Number(shop.shopPrice);
         productShopEntity.product = productEntity;
         productShopEntity.shop = shopEntity;
 
