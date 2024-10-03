@@ -10,7 +10,9 @@ export class ProductShopEntity {
   @Column({ type: 'numeric', precision: 13, scale: 3, nullable: false })
   sale_price: number;
 
-  @ManyToOne(() => ProductEntity, (product) => product.product_shop)
+  @ManyToOne(() => ProductEntity, (product) => product.product_shop, {
+    onDelete: 'CASCADE',
+  })
   product: ProductEntity;
 
   @ManyToOne(() => ShopEntity, (shop) => shop.product_shop, {
