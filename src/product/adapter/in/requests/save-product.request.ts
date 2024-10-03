@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   ArrayNotEmpty,
   IsArray,
@@ -17,12 +17,16 @@ export class SaveProductRequest {
 
   @IsOptional()
   @IsNumber()
+  @Transform(({ value }) => (value ? Number(value) : undefined))
   readonly cost: number;
 
   @IsOptional()
-  readonly image: Buffer;
+  image: Buffer;
 
-  @IsArray({ message: 'Um ou mais campos obrigatórios não foram preenchidos corretamente.' })
+  @IsArray({
+    message:
+      'Um ou mais campos obrigatórios não foram preenchidos corretamente.',
+  })
   @ArrayNotEmpty({
     message:
       'Um ou mais campos obrigatórios não foram preenchidos corretamente.',

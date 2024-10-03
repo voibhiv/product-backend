@@ -7,7 +7,11 @@ import { ShopEntity } from 'src/shop/adapter/out/shop.entity';
 @Injectable()
 export class ProductMapper {
   toEntity(product: Product): ProductEntity {
-    const productEntity = new ProductEntity(product.description, product.cost);
+    const productEntity = new ProductEntity(
+      product.description,
+      product.cost,
+      product.image,
+    );
 
     if (product.shops) {
       productEntity.product_shop = product.shops.map((shop) => {
