@@ -13,12 +13,12 @@ import { SaveProductCommand } from 'src/product/application/ports/in/save-produc
 
 export class SaveProductRequest {
   @IsNotEmpty()
-  readonly description: string;
+  description: string;
 
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => (value ? Number(value) : undefined))
-  readonly cost: number;
+  cost: number;
 
   @IsOptional()
   image: Buffer;
@@ -37,7 +37,7 @@ export class SaveProductRequest {
       'Existe uma inconsistência nos dados de entrada, por favor tente novamente!.',
   })
   @Type(() => SaveProductShopRequest)
-  readonly shops: SaveProductShopRequest[];
+  shops: SaveProductShopRequest[];
 
   toCommand(): SaveProductCommand {
     return new SaveProductCommand(

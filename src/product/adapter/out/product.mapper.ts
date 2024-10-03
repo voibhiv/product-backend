@@ -6,6 +6,22 @@ import { ShopEntity } from 'src/shop/adapter/out/shop.entity';
 
 @Injectable()
 export class ProductMapper {
+  toResponse(product: ProductEntity): Product {
+    return {
+      id: product.id,
+      description: product.description,
+      cost: product.cost,
+      image: product.image,
+      shops: product.product_shop.map((shops) => {
+        return {
+          idShop: shops.shop.id,
+          shopPrice: shops.sale_price,
+          description: shops.shop.description,
+        };
+      }),
+    };
+  }
+
   toEntity(product: Product): ProductEntity {
     const productEntity = new ProductEntity(
       product.description,

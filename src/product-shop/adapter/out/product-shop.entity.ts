@@ -13,6 +13,8 @@ export class ProductShopEntity {
   @ManyToOne(() => ProductEntity, (product) => product.product_shop)
   product: ProductEntity;
 
-  @ManyToOne(() => ShopEntity, (shop) => shop.product_shop)
+  @ManyToOne(() => ShopEntity, (shop) => shop.product_shop, {
+    eager: true,
+  })
   shop: ShopEntity;
 }

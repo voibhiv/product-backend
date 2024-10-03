@@ -8,7 +8,7 @@ import { ProductUseCase } from '../ports/in/product.use-case';
 export class ProductService implements ProductUseCase {
   constructor(private productPersistencePort: ProductPersistencePort) {}
 
-  async saveProduct(command: SaveProductCommand): Promise<void> {
+  async saveProduct(command: SaveProductCommand): Promise<Product> {
     const product: Product = {
       image: command.image,
       shops: command.shops,
@@ -16,6 +16,6 @@ export class ProductService implements ProductUseCase {
       description: command.description,
     };
 
-    await this.productPersistencePort.execute(product);
+    return this.productPersistencePort.execute(product);
   }
 }

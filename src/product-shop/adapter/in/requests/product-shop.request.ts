@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsInt, IsNumber } from 'class-validator';
 
 export class SaveProductShopRequest {
@@ -8,5 +8,6 @@ export class SaveProductShopRequest {
 
   @Type(() => Number)
   @IsNumber()
+  @Transform(({ value }) => (value ? Number(value) : undefined))
   shopPrice: number;
 }
