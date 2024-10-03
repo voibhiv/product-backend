@@ -1,3 +1,1 @@
-export class ProductShop {
-  
-}
+export class ProductShop {}

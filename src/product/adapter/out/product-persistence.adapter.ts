@@ -1,4 +1,4 @@
-import { ProductPersistencePort } from 'src/product/application/ports/out/product-persistence.adapter';
+import { ProductPersistencePort } from 'src/product/application/ports/out/product-persistence.port';
 import { Product } from 'src/product/domain/product';
 import { ProductEntity } from './product.entity';
 import { Repository } from 'typeorm';
@@ -49,11 +49,9 @@ export class ProductPersistenceAdapter implements ProductPersistencePort {
     }
   }
 
-  async validateName(descriptionName: string): Promise<boolean> {
-    const validateByDescription = await this.repository.findOne({
-      where: {
-        description: descriptionName,
-      },
+  async validateName(description: string): Promise<boolean> {
+    const validateByDescription = await this.repository.findOneBy({
+      description,
     });
 
     return Boolean(validateByDescription);

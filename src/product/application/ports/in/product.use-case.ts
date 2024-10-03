@@ -6,4 +6,5 @@ import { ListProductRequest } from 'src/product/adapter/in/requests/list-product
 export abstract class ProductUseCase {
   abstract saveProduct(command: SaveProductCommand): Promise<Product>;
   abstract list(filter: GenericFilter & ListProductRequest): Promise<Product[]>;
+  abstract delete(id: number): Promise<boolean>;
 }

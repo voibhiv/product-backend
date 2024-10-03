@@ -3,6 +3,6 @@ export class SaveProductShopCommand {
     readonly idShop: number,
     readonly shopPrice: number,
     readonly idProduct?: number,
-    readonly description?: string
+    readonly description?: string,
   ) {}
 }

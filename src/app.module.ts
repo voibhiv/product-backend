@@ -13,7 +13,7 @@ import { ShopModule } from './shop/shop.module';
       inject: [PostgresConfigService],
     }),
     ProductModule,
-    ShopModule
+    ShopModule,
   ],
   controllers: [],
   providers: [],

@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Query,
   UploadedFile,
@@ -39,5 +41,10 @@ export class ProductController {
   @Get()
   list(@Query() filter: GenericFilter & ListProductRequest) {
     return this.productUseCase.list(filter);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.productUseCase.delete(id);
   }
 }

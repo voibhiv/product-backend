@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { SaveProductCommand } from '../ports/in/save-product.command';
 import { Product } from 'src/product/domain/product';
-import { ProductPersistencePort } from '../ports/out/product-persistence.adapter';
+import { ProductPersistencePort } from '../ports/out/product-persistence.port';
 import { ProductUseCase } from '../ports/in/product.use-case';
 import { GenericFilter } from 'src/core/generics/generic-filter';
-import { ProductListPort } from '../ports/out/product-list.adapter';
+import { ProductListPort } from '../ports/out/product-list.port';
 import { ListProductRequest } from 'src/product/adapter/in/requests/list-product.request';
+import { ProductRemovePort } from '../ports/out/product-remove.port';
 
 @Injectable()
 export class ProductService implements ProductUseCase {
-  constructor(private productPersistencePort: ProductPersistencePort,
-    private productListPort: ProductListPort
+  constructor(
+    private productPersistencePort: ProductPersistencePort,
+    private productListPort: ProductListPort,
+    private productRemovePort: ProductRemovePort,
   ) {}
 
   async saveProduct(command: SaveProductCommand): Promise<Product> {
@@ -28,4 +31,7 @@ export class ProductService implements ProductUseCase {
     return this.productListPort.execute(filter);
   }
 
+  async delete(id: number): Promise<boolean> {
+    return this.productRemovePort.execute(id);
+  }
 }

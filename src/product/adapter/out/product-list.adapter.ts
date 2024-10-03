@@ -6,8 +6,9 @@ import { GenericFilter } from 'src/core/generics/generic-filter';
 import { PaginateService } from 'src/core/generics/paginate.service';
 import { Product } from 'src/product/domain/product';
 import { ListProductRequest } from '../in/requests/list-product.request';
-import { ProductListPort } from 'src/product/application/ports/out/product-list.adapter';
-
+import { ProductListPort } from 'src/product/application/ports/out/product-list.port';
+import { Injectable } from '@nestjs/common';
+@Injectable()
 export class ProductListAdapter
   extends PaginateService
   implements ProductListPort
@@ -37,7 +38,7 @@ export class ProductListAdapter
     });
   }
 
-  private createWhereQuery(
+  createWhereQuery(
     params: ListProductRequest,
   ): FindOptionsWhere<ProductEntity> {
     const where: FindOptionsWhere<ProductEntity> = {};

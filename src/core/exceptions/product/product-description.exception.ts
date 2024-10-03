@@ -4,7 +4,7 @@ export class ProductDescriptionException extends HttpException {
   constructor() {
     super(
       'Já existe um produto com essa descrição, por favor, tente novamente com outros dados!',
-      HttpStatus.BAD_REQUEST,
+      HttpStatus.CONFLICT,
     );
   }
 }
