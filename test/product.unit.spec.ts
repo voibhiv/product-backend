@@ -7,6 +7,7 @@ import { SaveProductRequest } from 'src/product/adapter/in/requests/save-product
 import { validate } from 'class-validator';
 import { ProductDescriptionException } from 'src/core/exceptions/product/product-description.exception';
 import { GenericFilter } from 'src/core/generics/generic-filter';
+import { ProductNotExist } from 'src/core/exceptions/product/product-not-exist.exception';
 
 describe('Product Service Tests', () => {
   let service: ProductService;
@@ -19,6 +20,7 @@ describe('Product Service Tests', () => {
           useValue: {
             saveProduct: jest.fn(),
             list: jest.fn(),
+            delete: jest.fn(),
           },
         },
       ],
@@ -27,7 +29,7 @@ describe('Product Service Tests', () => {
     service = moduleFixture.get<ProductService>(ProductService);
   });
 
-  describe('Create Product Service', () => {
+  describe('Create Product', () => {
     it('should be defined', () => {
       expect(service).toBeDefined();
     });
@@ -130,34 +132,34 @@ describe('Product Service Tests', () => {
       await expect(result).rejects.toThrow(ProductDescriptionException);
       expect(saveProductSpy).toHaveBeenCalledWith(mockCommand);
     });
+
+    describe('Class Validator Exceptions', () => {
+      it('should return validations errors when data is not valid', async () => {
+        const request = new SaveProductRequest();
+        request.description = '';
+        request.cost = undefined;
+        request.shops = [];
+
+        const errors = await validate(request);
+
+        expect(errors.length).toBeGreaterThan(0);
+        expect(errors[0].constraints.isNotEmpty).toBeDefined();
+        expect(errors[1].constraints.arrayNotEmpty).toBeDefined();
+      });
+
+      it('should accept request if validations request is valid', async () => {
+        const request = new SaveProductRequest();
+        request.description = 'Product Test';
+        request.cost = 50.35;
+        request.shops = [{ idShop: 1, shopPrice: 50.0 }];
+
+        const errors = await validate(request);
+        expect(errors.length).toBe(0);
+      });
+    });
   });
 
-  describe('Class Validator Exceptions', () => {
-    it('should return validations errors when data is not valid', async () => {
-      const request = new SaveProductRequest();
-      request.description = '';
-      request.cost = undefined;
-      request.shops = [];
-
-      const errors = await validate(request);
-
-      expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].constraints.isNotEmpty).toBeDefined();
-      expect(errors[1].constraints.arrayNotEmpty).toBeDefined();
-    });
-
-    it('should accept request if validations request is valid', async () => {
-      const request = new SaveProductRequest();
-      request.description = 'Product Test';
-      request.cost = 50.35;
-      request.shops = [{ idShop: 1, shopPrice: 50.0 }];
-
-      const errors = await validate(request);
-      expect(errors.length).toBe(0);
-    });
-  });
-
-  describe('List Product Service', () => {
+  describe('List Product', () => {
     it('should be defined', () => {
       expect(service).toBeDefined();
     });
@@ -215,25 +217,56 @@ describe('Product Service Tests', () => {
       expect(listProductSpy).toHaveBeenCalledWith(request);
       expect(statusCode).toBe(HttpStatus.OK);
     });
+
+    describe('Paginate Validator Exceptions', () => {
+      it('should return an error if page or limit was not defined', async () => {
+        const request = new GenericFilter();
+        request.page = undefined;
+        request.pageSize = undefined;
+
+        const errors = await validate(request);
+        expect(errors.length).toBeGreaterThan(0);
+      });
+
+      it('should accept request if validations request is valid', async () => {
+        const request = new GenericFilter();
+        request.page = 1;
+        request.pageSize = 10;
+
+        const errors = await validate(request);
+        expect(errors.length).toBe(0);
+      });
+    });
   });
 
-  describe('Paginate Validator Exceptions', () => {
-    it('should return an error if page or limit was not defined', async () => {
-      const request = new GenericFilter();
-      request.page = undefined;
-      request.pageSize = undefined;
+  describe('Delete Product', () => {
+    it('should return an error when product doesnt exist to remove', async () => {
+      const id = 100;
 
-      const errors = await validate(request);
-      expect(errors.length).toBeGreaterThan(0);
+      const deleteProductSpy = jest
+        .spyOn(service, 'delete')
+        .mockRejectedValue(new ProductNotExist());
+
+      const result = service.delete(id);
+
+      await expect(result).rejects.toThrow(ProductNotExist);
+      expect(deleteProductSpy).toHaveBeenCalledWith(id);
     });
 
-    it('should accept request if validations request is valid', async () => {
-      const request = new GenericFilter();
-      request.page = 1;
-      request.pageSize = 10;
+    it('should delete an product', async () => {
+      const id = 1;
 
-      const errors = await validate(request);
-      expect(errors.length).toBe(0);
+      const deleteProductSpy = jest
+        .spyOn(service, 'delete')
+        .mockResolvedValue(true);
+
+      const result = await service.delete(id);
+
+      const statusCode = HttpStatus.OK;
+
+      expect(result).toEqual(true);
+      expect(deleteProductSpy).toHaveBeenCalledWith(id);
+      expect(statusCode).toBe(HttpStatus.OK);
     });
   });
 });
