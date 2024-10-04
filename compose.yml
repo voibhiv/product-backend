@@ -13,9 +13,9 @@ services:
     restart: always
     tty: true
     environment:
-      POSTGRES_DB: product-db
-      POSTGRES_USER: user_dev
-      POSTGRES_PASSWORD: pass_dev
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /var/lib/postgresql/data/
     ports:
       - 5432:5432
