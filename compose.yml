@@ -21,6 +21,22 @@ services:
       - 5432:5432
     volumes:
       - product-backend-volume:/var/lib/postgresql/data/:rw
+  migration:
+    build:
+      context: .
+    command:
+      [
+        './wait-for-it/wait-for-it.sh',
+        'db:5432',
+        '--',
+        'yarn',
+        'typeorm:run-migration',
+      ]
+    links:
+      - db
+    depends_on:
+      - db
+    env_file: ./.env
 
 volumes:
   product-backend-volume:
