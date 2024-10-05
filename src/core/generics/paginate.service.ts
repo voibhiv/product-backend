@@ -16,7 +16,7 @@ export class PaginateService {
       return order;
     }
 
-    order.id = SortOrder.DESC;
+    order.id = SortOrder.ASC;
     return order;
   }
 
