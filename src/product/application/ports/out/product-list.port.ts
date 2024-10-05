@@ -7,7 +7,7 @@ import { FindOptionsWhere } from 'typeorm';
 export abstract class ProductListPort {
   abstract execute(
     filter: GenericFilter & ListProductRequest,
-  ): Promise<Product[]>;
+  ): Promise<{ products: Product[]; count: number }>;
   abstract createWhereQuery(
     params: ListProductRequest,
   ): FindOptionsWhere<ProductEntity>;

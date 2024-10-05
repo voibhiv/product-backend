@@ -23,19 +23,24 @@ export class ProductListAdapter
 
   async execute(
     filter: GenericFilter & ListProductRequest,
-  ): Promise<Product[]> {
+  ): Promise<{ products: Product[]; count: number }> {
     const { ...params } = filter;
     const relations = ['product_shop', 'product_shop.shop'];
-    const productList = await this.paginate(
+    const productListPaginated = await this.paginate(
       this.repository,
       filter,
       this.createWhereQuery(params),
       relations,
     );
 
-    return productList.map((product) => {
-      return this.productMapper.toResponse(product);
-    });
+    const [productList, count] = productListPaginated;
+
+    return {
+      products: productList.map((product) => {
+        return this.productMapper.toResponse(product);
+      }),
+      count,
+    };
   }
 
   createWhereQuery(

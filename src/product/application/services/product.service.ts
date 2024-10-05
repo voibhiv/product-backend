@@ -27,7 +27,7 @@ export class ProductService implements ProductUseCase {
     return this.productPersistencePort.execute(product);
   }
 
-  async list(filter: GenericFilter & ListProductRequest): Promise<Product[]> {
+  async list(filter: GenericFilter & ListProductRequest): Promise<{ products: Product[]; count: number }> {
     return this.productListPort.execute(filter);
   }
 
