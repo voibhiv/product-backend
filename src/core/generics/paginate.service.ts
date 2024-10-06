@@ -26,9 +26,12 @@ export class PaginateService {
     where: FindOptionsWhere<T>,
     relations: FindOptionsRelationByString | FindOptionsRelations<T> = [],
   ) {
+    const page = filter.page > 0 ? filter.page : 1;
+    const skip = (page - 1) * filter.pageSize;
+
     return repository.findAndCount({
       order: this.createOrderQuery(filter),
-      skip: (filter.page - 1) * (filter.pageSize + 1),
+      skip: skip,
       take: filter.pageSize,
       where: where,
       relations: relations,
