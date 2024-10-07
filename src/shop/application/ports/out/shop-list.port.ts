@@ -1,3 +1,5 @@
+import { Shop } from 'src/shop/domain/shop';
+
 export abstract class ShopListPort {
-  abstract execute(): Promise<any>;
+  abstract execute(): Promise<Shop[]>;
 }
