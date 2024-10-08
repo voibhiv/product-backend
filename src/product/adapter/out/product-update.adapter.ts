@@ -8,6 +8,7 @@ import { ProductShopEntity } from 'src/product-shop/adapter/out/product-shop.ent
 import { ProductDescriptionException } from 'src/core/exceptions/product/product-description.exception';
 import { ProductCostException } from 'src/core/exceptions/product/product-cost.exception';
 import { ProductMapper } from './product.mapper';
+import { Product } from 'src/product/domain/product';
 
 export class ProductUpdateAdapter implements ProductUpdatePort {
   constructor(
@@ -18,7 +19,7 @@ export class ProductUpdateAdapter implements ProductUpdatePort {
     private readonly repositoryProductShop: Repository<ProductShopEntity>,
   ) {}
 
-  async execute(command: SaveProductCommand, id: number): Promise<any> {
+  async execute(command: SaveProductCommand, id: number): Promise<Product> {
     const allIdsSended = command.shops.map((shop) => shop.idShop);
     const shopsNotSended = await this.getShopsIdsToRemove(allIdsSended, id);
     const toRemoveIds = shopsNotSended.map((productShop) => productShop.id);
