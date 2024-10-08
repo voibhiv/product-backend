@@ -164,47 +164,50 @@ describe('Product Service Tests', () => {
       expect(service).toBeDefined();
     });
 
-    it('should return a list of products if sucess', async () => {
+    it('should return a list of products if success', async () => {
       const request = new GenericFilter();
       request.page = 1;
       request.pageSize = 10;
 
-      const mockProductResponse = [
-        {
-          description: 'Testando módulo',
-          cost: 12345622012.123,
-          image: null,
-          shops: [
-            {
-              idShop: 3,
-              shopPrice: 200.31,
-              description: 'Mocked Desc',
-            },
-            {
-              idShop: 4,
-              shopPrice: 120.0,
-              description: 'Mocked Desc',
-            },
-          ],
-        },
-        {
-          description: 'Testando módulo 2',
-          cost: 12345622012.123,
-          image: null,
-          shops: [
-            {
-              idShop: 6,
-              shopPrice: 200.31,
-              description: 'Mocked Desc',
-            },
-            {
-              idShop: 7,
-              shopPrice: 120.0,
-              description: 'Mocked Desc',
-            },
-          ],
-        },
-      ];
+      const mockProductResponse = {
+        products: [
+          {
+            description: 'Testando módulo',
+            cost: 12345622012.123,
+            image: null,
+            shops: [
+              {
+                idShop: 3,
+                shopPrice: 200.31,
+                description: 'Mocked Desc',
+              },
+              {
+                idShop: 4,
+                shopPrice: 120.0,
+                description: 'Mocked Desc',
+              },
+            ],
+          },
+          {
+            description: 'Testando módulo 2',
+            cost: 12345622012.123,
+            image: null,
+            shops: [
+              {
+                idShop: 6,
+                shopPrice: 200.31,
+                description: 'Mocked Desc',
+              },
+              {
+                idShop: 7,
+                shopPrice: 120.0,
+                description: 'Mocked Desc',
+              },
+            ],
+          },
+        ],
+        count: 2,
+      };
 
       const listProductSpy = jest
         .spyOn(service, 'list')
