@@ -30,6 +30,7 @@ export class ProductUpdateAdapter implements ProductUpdatePort {
     try {
       const hasProductWithSameDescription = await this.validateName(
         command.description,
+        id,
       );
 
       if (hasProductWithSameDescription) {
@@ -80,7 +81,10 @@ export class ProductUpdateAdapter implements ProductUpdatePort {
     }
   }
 
-  async getShopsIdsToRemove(allIdsSended: number[], id: number) {
+  async getShopsIdsToRemove(
+    allIdsSended: number[],
+    id: number,
+  ): Promise<ProductShopEntity[]> {
     return this.repositoryProductShop.find({
       select: {
         id: true,
@@ -102,9 +106,12 @@ export class ProductUpdateAdapter implements ProductUpdatePort {
     });
   }
 
-  async validateName(description: string): Promise<boolean> {
-    const validateByDescription = await this.repository.findOneBy({
-      description,
+  async validateName(description: string, id: number): Promise<boolean> {
+    const validateByDescription = await this.repository.findOne({
+      where: {
+        description,
+        id: Not(id),
+      },
     });
 
     return Boolean(validateByDescription);
