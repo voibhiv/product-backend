@@ -9,6 +9,7 @@ import { ProductDescriptionException } from 'src/core/exceptions/product/product
 import { ProductCostException } from 'src/core/exceptions/product/product-cost.exception';
 import { ProductMapper } from './product.mapper';
 import { Product } from 'src/product/domain/product';
+import { ShopEntity } from 'src/shop/adapter/out/shop.entity';
 
 export class ProductUpdateAdapter implements ProductUpdatePort {
   constructor(
@@ -53,7 +54,17 @@ export class ProductUpdateAdapter implements ProductUpdatePort {
           (productSE) => productSE.shop.id === shop.idShop,
         );
 
-        productShopEntity.sale_price = shop.shopPrice;
+        if (productShopEntity) {
+          productShopEntity.sale_price = shop.shopPrice;
+        } else {
+          const productShopEntity = new ProductShopEntity();
+          const shopEntity = new ShopEntity();
+          shopEntity.id = shop.idShop;
+          productShopEntity.sale_price = Number(shop.shopPrice);
+          productShopEntity.product = productEntity;
+          productShopEntity.shop = shopEntity;
+          productEntity.product_shop.push(productShopEntity);
+        }
       });
 
       const productSaved = await this.repository.save(productEntity);
