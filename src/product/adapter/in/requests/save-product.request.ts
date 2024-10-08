@@ -37,6 +37,15 @@ export class SaveProductRequest {
       'Existe uma inconsistência nos dados de entrada, por favor tente novamente!.',
   })
   @Type(() => SaveProductShopRequest)
+  @Transform(({ value }) => {
+    try {
+      return typeof value === 'string' ? JSON.parse(value) : value;
+    } catch (error) {
+      throw new Error(
+        'Formato inválido para shops. Deve ser um JSON stringificado.',
+      );
+    }
+  })
   shops: SaveProductShopRequest[];
 
   toCommand(): SaveProductCommand {
