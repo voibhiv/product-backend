@@ -20,10 +20,10 @@ Make sure that ports `3000` (for the back-end) and `5432` (for the database) are
 1. Clone the repository:
 
 ```bash
-# Clone o repositório
+# Clone repo
 $ git clone https://github.com/voibhiv/product-backend
 
-# Entre na pasta do projeto
+# Go to main folder
 $ cd product-backend
 ```
 
