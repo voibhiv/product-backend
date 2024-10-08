@@ -5,6 +5,7 @@ import { ListProductRequest } from 'src/product/adapter/in/requests/list-product
 
 export abstract class ProductUseCase {
   abstract saveProduct(command: SaveProductCommand): Promise<Product>;
+  abstract updateProduct(command: SaveProductCommand, id: number): Promise<Product>;
   abstract list(
     filter: GenericFilter & ListProductRequest,
   ): Promise<{ products: Product[]; count: number }>;

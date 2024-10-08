@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UploadedFile,
   UseInterceptors,
@@ -36,6 +37,24 @@ export class ProductController {
     const command: SaveProductCommand = request.toCommand();
 
     return this.productUseCase.saveProduct(command);
+  }
+
+  @Put(':id')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      fileFilter: imageFileFilter,
+    }),
+  )
+  upload(
+    @Body() request: SaveProductRequest,
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+  ) {
+    if (file) request.image = file.buffer;
+
+    const command: SaveProductCommand = request.toCommand();
+
+    return this.productUseCase.updateProduct(command, id);
   }
 
   @Get()

@@ -7,6 +7,7 @@ import { GenericFilter } from 'src/core/generics/generic-filter';
 import { ProductListPort } from '../ports/out/product-list.port';
 import { ListProductRequest } from 'src/product/adapter/in/requests/list-product.request';
 import { ProductRemovePort } from '../ports/out/product-remove.port';
+import { ProductUpdatePort } from '../ports/out/product-update.port';
 
 @Injectable()
 export class ProductService implements ProductUseCase {
@@ -14,6 +15,7 @@ export class ProductService implements ProductUseCase {
     private productPersistencePort: ProductPersistencePort,
     private productListPort: ProductListPort,
     private productRemovePort: ProductRemovePort,
+    private productUpdatePort: ProductUpdatePort,
   ) {}
 
   async saveProduct(command: SaveProductCommand): Promise<Product> {
@@ -27,11 +29,20 @@ export class ProductService implements ProductUseCase {
     return this.productPersistencePort.execute(product);
   }
 
-  async list(filter: GenericFilter & ListProductRequest): Promise<{ products: Product[]; count: number }> {
+  async list(
+    filter: GenericFilter & ListProductRequest,
+  ): Promise<{ products: Product[]; count: number }> {
     return this.productListPort.execute(filter);
   }
 
   async delete(id: number): Promise<boolean> {
     return this.productRemovePort.execute(id);
+  }
+
+  async updateProduct(
+    command: SaveProductCommand,
+    id: number,
+  ): Promise<Product> {
+    return this.productUpdatePort.execute(command, id);
   }
 }

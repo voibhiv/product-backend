@@ -6,6 +6,8 @@ import { ProductListPort } from 'src/product/application/ports/out/product-list.
 import { ProductListAdapter } from './product-list.adapter';
 import { ProductRemovePort } from 'src/product/application/ports/out/product-remove.port';
 import { ProductRemoveAdapter } from './product-remove.adapter';
+import { ProductUpdatePort } from 'src/product/application/ports/out/product-update.port';
+import { ProductUpdateAdapter } from './product-update.adapter';
 
 export const ServicesOut: Provider[] = [
   {
@@ -19,6 +21,10 @@ export const ServicesOut: Provider[] = [
   {
     provide: ProductRemovePort,
     useClass: ProductRemoveAdapter,
+  },
+  {
+    provide: ProductUpdatePort,
+    useClass: ProductUpdateAdapter,
   },
   ProductMapper,
 ];
